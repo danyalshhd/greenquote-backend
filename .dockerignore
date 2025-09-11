@@ -1,0 +1,29 @@
+# Node modules should not be copied; install inside container
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+
+
+# Test coverage and build artifacts
+coverage
+dist
+build
+
+# IDE/editor files
+.vscode
+.idea
+*.sublime-workspace
+*.sublime-project
+
+
