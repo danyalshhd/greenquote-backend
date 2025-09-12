@@ -13,10 +13,7 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
 ## Setup (local)
 1. Copy `.env.example` to `.env` and edit if needed.
 2. Start DB + API:
-   - With Docker Compose:
-     ```
-     docker-compose up --build
-     ```
+   
    - Or locally:
      - `$ docker run -d --name redis-server -p 6379:6379 redis`
      - `docker run -d --name greenquote-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=greenquote -p 5432:5432 postgres:15
