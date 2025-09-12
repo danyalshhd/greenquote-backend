@@ -7,9 +7,9 @@ import { UsersService } from './users.service';
     UsersService,
     {
       provide: 'PRISMA',
-      useValue: new PrismaClient()
-    }
+      useValue: new PrismaClient(),
+    },
   ],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}

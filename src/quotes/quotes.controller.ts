@@ -22,7 +22,7 @@ export class QuotesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(
+  async createQuote(
     @Request() req: { user: AuthUser },
     @Body() body: CreateQuoteDto,
   ): Promise<CreateQuoteResponse> {
@@ -32,7 +32,10 @@ export class QuotesController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async get(@Request() req: { user: AuthUser }, @Param('id') id: string) {
+  async getQuoteById(
+    @Request() req: { user: AuthUser },
+    @Param('id') id: string,
+  ) {
     const res = await this.quotesService.getQuoteById(req.user, id);
     if (!res) throw new NotFoundException('Quote not found');
     return ok(res);
@@ -40,14 +43,17 @@ export class QuotesController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async listMy(@Request() req: { user: AuthUser }) {
+  async listQuotesForUser(@Request() req: { user: AuthUser }) {
     const res = await this.quotesService.listQuotesForUser(req.user.id);
     return ok(res);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/admin/all')
-  async adminList(@Request() req: { user: AuthUser }, @Query('q') q?: string) {
+  async listAllQuotesForAdmin(
+    @Request() req: { user: AuthUser },
+    @Query('q') q?: string,
+  ) {
     if (!req.user.isAdmin) throw new NotFoundException('Admin only');
     const res = await this.quotesService.listAllQuotesForAdmin({ term: q });
     return ok(res);

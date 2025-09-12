@@ -14,18 +14,20 @@ const config = configuration();
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || config.jwt.secret,
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || config.jwt.expiresIn }
-    })
+      signOptions: {
+        expiresIn: process.env.JWT_EXPIRES_IN || config.jwt.expiresIn,
+      },
+    }),
   ],
   providers: [
     AuthService,
     {
       provide: 'PRISMA',
-      useValue: new PrismaClient()
+      useValue: new PrismaClient(),
     },
     JwtStrategy,
   ],
   controllers: [AuthController],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

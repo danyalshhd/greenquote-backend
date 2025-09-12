@@ -35,7 +35,7 @@ export class AuthController {
     if (!valid) {
       throw new UnauthorizedException('Invalid email or password');
     }
-    const token = await this.authService.login(valid);
+    const token = this.authService.login(valid);
     return ok(token);
   }
 }

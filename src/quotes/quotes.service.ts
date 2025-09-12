@@ -1,5 +1,5 @@
 import { Injectable, Inject, ForbiddenException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Quote } from '@prisma/client';
 import { CreateQuoteDto } from './dto/create-qoute.dto';
 import { QuoteResponse } from './interface/quote-response.interface';
 import { Offer } from './interface/offer.interface';
@@ -65,9 +65,9 @@ export class QuotesService {
       dto.monthlyConsumptionKwh,
       dto.systemSizeKw,
     );
-    const offers = this.buildOffers(principal, band);
+    const offers: Offer[] = this.buildOffers(principal, band);
 
-    const quote = await this.prisma.quote.create({
+    const quote: Quote = await this.prisma.quote.create({
       data: {
         userId,
         fullName: dto.fullName,
@@ -106,7 +106,9 @@ export class QuotesService {
     requester: { id: string; isAdmin: boolean },
     id: string,
   ): Promise<QuoteResponse | null> {
-    const q = await this.prisma.quote.findUnique({ where: { id } });
+    const q: Quote | null = await this.prisma.quote.findUnique({
+      where: { id },
+    });
     if (!q) return null;
 
     if (q.userId !== requester.id && !requester.isAdmin) {
@@ -142,7 +144,7 @@ export class QuotesService {
       createdAt: Date;
     }>
   > {
-    const quotes = await this.prisma.quote.findMany({
+    const quotes: Quote[] = await this.prisma.quote.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
@@ -180,7 +182,7 @@ export class QuotesService {
         }
       : {};
 
-    const quotes = await this.prisma.quote.findMany({
+    const quotes: Quote[] = await this.prisma.quote.findMany({
       where,
       orderBy: { createdAt: 'desc' },
     });

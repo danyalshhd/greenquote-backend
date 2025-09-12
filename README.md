@@ -18,6 +18,8 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
      docker-compose up --build
      ```
    - Or locally:
+     - `docker run -d --name greenquote-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=greenquote -p 5432:5432 postgres:15
+        `
      - `npm ci`
      - set DATABASE_URL
      - `npx prisma migrate dev --name init`
