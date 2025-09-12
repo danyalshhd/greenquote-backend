@@ -2,6 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { QuotesService } from '../src/quotes/quotes.service';
+import {
+  systemPriceFor,
+  computeRiskBand,
+  aprForBand,
+  monthlyPayment,
+  buildOffers,
+} from '../src/quotes/utils/quote-calculations';
 
 describe('QuotesService', () => {
   let service: QuotesService;
@@ -28,33 +35,32 @@ describe('QuotesService', () => {
 
   it('computes system price and offers correctly', () => {
     const principal = 12000;
-    const payments = service['buildOffers'](principal, 'A');
+    const payments = buildOffers(principal, 'A');
     expect(payments.length).toBe(3);
-    // check monthly payment numeric
     expect(payments[0].monthlyPayment).toBeGreaterThan(0);
   });
 
   it('calculates system price correctly', () => {
-    expect(service['systemPriceFor'](10)).toBe(12000);
-    expect(service['systemPriceFor'](0)).toBe(0);
+    expect(systemPriceFor(10)).toBe(12000);
+    expect(systemPriceFor(0)).toBe(0);
   });
 
   it('computes risk band correctly', () => {
-    expect(service['computeRiskBand'](500, 5)).toBe('A');
-    expect(service['computeRiskBand'](300, 7)).toBe('B');
-    expect(service['computeRiskBand'](100, 2)).toBe('C');
+    expect(computeRiskBand(500, 5)).toBe('A');
+    expect(computeRiskBand(300, 7)).toBe('B');
+    expect(computeRiskBand(100, 2)).toBe('C');
   });
 
   it('returns correct APR for band', () => {
-    expect(service['aprForBand']('A')).toBe(6.9);
-    expect(service['aprForBand']('B')).toBe(8.9);
-    expect(service['aprForBand']('C')).toBe(11.9);
+    expect(aprForBand('A')).toBe(6.9);
+    expect(aprForBand('B')).toBe(8.9);
+    expect(aprForBand('C')).toBe(11.9);
   });
 
   it('calculates monthly payment correctly', () => {
-    expect(service['monthlyPayment'](12000, 6.9, 10)).toBeGreaterThan(0);
-    expect(service['monthlyPayment'](0, 6.9, 10)).toBe(0);
-    expect(service['monthlyPayment'](12000, 0, 10)).toBeCloseTo(100);
+    expect(monthlyPayment(12000, 6.9, 10)).toBeGreaterThan(0);
+    expect(monthlyPayment(0, 6.9, 10)).toBe(0);
+    expect(monthlyPayment(12000, 0, 10)).toBeCloseTo(100);
   });
 
   it('creates a quote and returns expected structure', async () => {

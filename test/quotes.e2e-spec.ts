@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Test, TestingModule } from 'nestjs/testing';
-import { INestApplication } from 'nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { RedisService } from '../services/redis.service';
 
 describe('Quotes (e2e)', () => {
     let app: INestApplication;

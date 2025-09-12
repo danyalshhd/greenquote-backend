@@ -18,6 +18,7 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
      docker-compose up --build
      ```
    - Or locally:
+     - `$ docker run -d --name redis-server -p 6379:6379 redis`
      - `docker run -d --name greenquote-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=greenquote -p 5432:5432 postgres:15
         `
      - `npm ci`
@@ -47,8 +48,8 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
   monorepo can be chosed but with larger teams it can become hard to manage.
   SQLite is not suitable for production grade apps. Primsa and Postgres provides
   higher typesafety as compared to MongoDB. Prisma have easier migrations and faster development
-- I would add docker compose for dev and prod environment
-  add more typescript types and interfaces
+- I would add docker compose for dev and prod environment,
+  add caching on monthly payment logic and also bull message queue for processing heavier tasks in parallel.
   add states and validation at Front End hence improving error handling at forms
   versioning to API
   add GraphQL
@@ -57,7 +58,7 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
   backend and frontend, also check governance and compliance wherever necessary
 - I would definitely go for cloud run as no need to manager servers and pay as you use, works with 
   other services of google like postgres
-- I would mock data and test each scenario, do more of integration tests to cover all the flows
+- I would mock data and test each scenario, do more of integration tests to cover all the flows.
   add more unit tests.
-  For production readiness test coverage and monitoring alertness over email, database migration tests and rollbacks
-  check security like if the password is properly hashed, scalabilty tests to ensure scalability
+  For production readiness test coverage and monitoring alertness over email, database migration tests and rollbacks.
+  check security like if the password is properly hashed, scalabilty tests to ensure scalability.

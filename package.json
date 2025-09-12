@@ -11,6 +11,7 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:seed": "ts-node -r tsconfig-paths/register prisma/seed.ts",
     "test": "jest",
+    "test:e2e": "jest --config test/jest-e2e.json",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
@@ -28,6 +29,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "express": "^5.1.0",
+    "ioredis": "^5.7.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

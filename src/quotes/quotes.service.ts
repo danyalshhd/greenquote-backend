@@ -3,69 +3,25 @@ import { PrismaClient, Quote } from '@prisma/client';
 import { CreateQuoteDto } from './dto/create-qoute.dto';
 import { QuoteResponse } from './interface/quote-response.interface';
 import { Offer } from './interface/offer.interface';
+import {
+  systemPriceFor,
+  computeRiskBand,
+  buildOffers,
+} from './utils/quote-calculations';
 
 @Injectable()
 export class QuotesService {
   constructor(@Inject('PRISMA') private prisma: PrismaClient) {}
 
-  private systemPriceFor(sizeKw: number): number {
-    return sizeKw * 1200; // currency units
-  }
-
-  private computeRiskBand(
-    monthlyConsumptionKwh: number,
-    systemSizeKw: number,
-  ): 'A' | 'B' | 'C' {
-    if (monthlyConsumptionKwh >= 400 && systemSizeKw <= 6) return 'A';
-    if (monthlyConsumptionKwh >= 250) return 'B';
-    return 'C';
-  }
-
-  private aprForBand(band: string): number {
-    if (band === 'A') return 6.9;
-    if (band === 'B') return 8.9;
-    return 11.9;
-  }
-
-  // amortization monthly payment formula
-  // P = principal, r = monthly rate, n = number of months
-  private monthlyPayment(
-    principal: number,
-    aprPercent: number,
-    termYears: number,
-  ): number {
-    const r = aprPercent / 100 / 12;
-    const n = termYears * 12;
-    if (principal <= 0) return 0;
-    if (r === 0) return principal / n;
-    const payment =
-      (principal * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
-    return Number(payment.toFixed(2));
-  }
-
-  private buildOffers(principal: number, band: string): Offer[] {
-    const apr = this.aprForBand(band);
-    const terms = [5, 10, 15];
-    return terms.map((t) => ({
-      termYears: t,
-      apr,
-      principalUsed: Number(principal.toFixed(2)),
-      monthlyPayment: this.monthlyPayment(principal, apr, t),
-    }));
-  }
-
   async createQuote(
     userId: string,
     dto: CreateQuoteDto,
   ): Promise<QuoteResponse> {
-    const systemPrice = this.systemPriceFor(dto.systemSizeKw);
+    const systemPrice = systemPriceFor(dto.systemSizeKw);
     const down = dto.downPayment ?? 0;
     const principal = Math.max(0, systemPrice - down);
-    const band = this.computeRiskBand(
-      dto.monthlyConsumptionKwh,
-      dto.systemSizeKw,
-    );
-    const offers: Offer[] = this.buildOffers(principal, band);
+    const band = computeRiskBand(dto.monthlyConsumptionKwh, dto.systemSizeKw);
+    const offers: Offer[] = buildOffers(principal, band);
 
     const quote: Quote = await this.prisma.quote.create({
       data: {
