@@ -38,10 +38,24 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
 ## Tests
 - `npx ts-jest config:init`
 - `npm test`
+- `npm run test:e2e`
 
 ## Trade-offs & next steps
-- Prisma chosen for developer speed and type-safety.
-- JWT simple session approach; for production, add refresh tokens.
-- Add rate limiting, request logging, Sentry.
-- Add E2E tests (Playwright), OpenAPI docs.
-- Add CI/CD pipeline for migrations, lint, tests, container build.
+- NestJS chosed for modularity and scalability in code as in express things get messy, 
+  monorepo can be chosed but with larger teams it can become hard to manage.
+  SQLite is not suitable for production grade apps. Primsa and Postgres provides
+  higher typesafety as compared to MongoDB. Prisma have easier migrations and faster development
+- I would add docker compose for dev and prod environment
+  add more typescript types and interfaces
+  add states and validation at Front End hence improving error handling at forms
+  versioning to API
+  add GraphQL
+  setup CI for automated test running and linting
+- I would setup using github actions and would check linting errors, unit tests, integration tests, build 
+  backend and frontend, also check governance and compliance wherever necessary
+- I would definitely go for cloud run as no need to manager servers and pay as you use, works with 
+  other services of google like postgres
+- I would mock data and test each scenario, do more of integration tests to cover all the flows
+  add more unit tests.
+  For production readiness test coverage and monitoring alertness over email, database migration tests and rollbacks
+  check security like if the password is properly hashed, scalabilty tests to ensure scalability
