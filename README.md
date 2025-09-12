@@ -25,6 +25,10 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
 
 3. Seeded admin: `admin@test.com / Admin123!`
 
+## API Docs
+
+     - `http://localhost:3000/api/docs`
+
 ## Endpoints
 - `POST /api/auth/register` { fullName, email, password }
 - `POST /api/auth/login` { email, password } -> returns accessToken
