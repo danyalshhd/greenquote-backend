@@ -20,7 +20,7 @@ Implements the GreenQuote pre-qualification API for Cloover coding challenge.
      - `npm ci`
      - set DATABASE_URL
      - `npx prisma migrate dev --name init`
-     - `npx prisma db seed` (or `npm run prisma:seed`)
+     - `npm run prisma:seed`
      - `npm run dev`
 
 3. Seeded admin: `admin@test.com / Admin123!`
